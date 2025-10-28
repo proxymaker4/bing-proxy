@@ -1,18 +1,13 @@
 import express from "express";
 import fetch from "node-fetch";
 import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const BING_KEY = process.env.BING_KEY || "YOUR_BING_KEY_HERE"; // replace with your key
+const BING_KEY = process.env.BING_KEY || "YOUR_BING_KEY_HERE"; // replace with your Bing API key
 
 app.use(cors());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static("."));
 
 app.get("/search", async (req, res) => {
   const query = req.query.q;
@@ -30,32 +25,4 @@ app.get("/search", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+app.listen(PORT, () => console.log(`Proxy browser running on port ${PORT}`));
