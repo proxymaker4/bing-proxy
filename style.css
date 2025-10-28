@@ -9,7 +9,7 @@ body, html {
 
 #toolbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   padding: 10px;
   background: #0a64c8;
@@ -23,6 +23,21 @@ body, html {
   font-size: 16px;
 }
 
+#menu-btn {
+  margin-left: 10px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #0af;
+  color: #111;
+  font-weight: bold;
+}
+
+#menu-btn:hover {
+  background: #08c;
+}
+
 #datetime {
   margin-left: 20px;
   font-weight: bold;
@@ -30,7 +45,7 @@ body, html {
 
 #results {
   padding: 10px;
-  overflow-y: auto;
+  overflow: auto;
   height: calc(100% - 50px);
 }
 
