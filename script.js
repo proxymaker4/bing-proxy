@@ -1,54 +1,47 @@
-body, html {
-  margin:0;
-  padding:0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #111;
-  color: white;
-  height: 100%;
+const searchBar = document.getElementById('search-bar');
+const resultsDiv = document.getElementById('results');
+const datetime = document.getElementById('datetime');
+
+// Update time every second
+function updateTime() {
+  const now = new Date();
+  datetime.textContent = now.toLocaleString();
+}
+setInterval(updateTime, 1000);
+updateTime();
+
+// Search on Enter
+searchBar.addEventListener('keydown', e => {
+  if (e.key === 'Enter') searchBing(searchBar.value);
+});
+
+async function searchBing(query) {
+  if (!query) return;
+  resultsDiv.innerHTML = 'Searching…';
+  try {
+    const res = await fetch(`/search?q=${encodeURIComponent(query)}`);
+    if (!res.ok) {
+      resultsDiv.textContent = 'Error fetching results';
+      return;
+    }
+    const data = await res.json();
+    renderResults(data);
+  } catch (err) {
+    resultsDiv.textContent = `Network error: ${err.message}`;
+  }
 }
 
-#toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background: #0a64c8;
-}
+function renderResults(data) {
+  const pages = data.webPages?.value || [];
+  if (!pages.length) {
+    resultsDiv.innerHTML = '<em>No results found</em>';
+    return;
+  }
 
-#search-bar {
-  flex:1;
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: none;
-  font-size: 16px;
-}
-
-#datetime {
-  margin-left: 20px;
-  font-weight: bold;
-}
-
-#results {
-  padding: 10px;
-  overflow-y: auto;
-  height: calc(100% - 50px);
-}
-
-.result-item {
-  padding: 10px;
-  margin-bottom: 8px;
-  background: #222;
-  border-radius: 6px;
-}
-
-.result-item a {
-  color: #0af;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.result-item .snippet {
-  color: #ccc;
-  font-size: 14px;
-  margin-top: 4px;
+  resultsDiv.innerHTML = pages.map(p => `
+    <div class="result-item">
+      <a href="${p.url}" target="_blank">${p.name}</a>
+      <div class="snippet">${p.snippet}</div>
+    </div>
+  `).join('');
 }
