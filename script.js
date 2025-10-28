@@ -1,6 +1,7 @@
 const searchBar = document.getElementById('search-bar');
 const resultsDiv = document.getElementById('results');
 const datetime = document.getElementById('datetime');
+const menuBtn = document.getElementById('menu-btn');
 
 // Update time every second
 function updateTime() {
@@ -15,6 +16,18 @@ searchBar.addEventListener('keydown', e => {
   if (e.key === 'Enter') searchBing(searchBar.value);
 });
 
+// Menu button click
+menuBtn.addEventListener('click', () => {
+  resultsDiv.innerHTML = `
+    <iframe 
+      src="https://menus.healthepro.com/organizations/36/sites/374/menus/95879" 
+      style="width:100%; height:100%; border:none;"
+      title="Menu">
+    </iframe>
+  `;
+});
+
+// Function to perform Bing search via Node proxy
 async function searchBing(query) {
   if (!query) return;
   resultsDiv.innerHTML = 'Searching…';
@@ -31,6 +44,7 @@ async function searchBing(query) {
   }
 }
 
+// Render Bing search results
 function renderResults(data) {
   const pages = data.webPages?.value || [];
   if (!pages.length) {
@@ -41,7 +55,7 @@ function renderResults(data) {
   resultsDiv.innerHTML = pages.map(p => `
     <div class="result-item">
       <a href="${p.url}" target="_blank">${p.name}</a>
-      <div class="snippet">${p.snippet}</div>
+      <div class="snippet">${p.snippet || ''}</div>
     </div>
   `).join('');
 }
