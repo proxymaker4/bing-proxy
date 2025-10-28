@@ -1,7 +1,7 @@
 {
-  "name": "bing-proxy-os",
+  "name": "proxy-browser",
   "version": "1.0.0",
-  "description": "OS front-end with Bing search proxy",
+  "description": "Simple browser proxy using Bing",
   "type": "module",
   "main": "server.js",
   "scripts": {
